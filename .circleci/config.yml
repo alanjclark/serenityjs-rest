@@ -49,9 +49,7 @@ jobs:
 
       - run:
           name: Start webserver
-          command: |
-            ./apache-tomcat-9.0.37/bin/catalina.sh start 
-            sleep 5   
+          command: ./startwebserver.sh
           background: true
 
       # - run:
