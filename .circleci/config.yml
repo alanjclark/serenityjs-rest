@@ -23,7 +23,7 @@ jobs:
       - run:
           name: Wait for webserver to start up
           command: |
-            until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:8080); do
+            until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:8000); do
               printf '.'
               sleep 1
             done
