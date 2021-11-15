@@ -49,16 +49,13 @@ jobs:
 
       - run:
           name: Start webserver
-          command: ./startwebserver.sh
-          background: true
-
-      - run:
-          name: Wait for webserver
           command: |
             chmod +x ./wait.sh
+            ./startwebserver.sh
             ./wait.sh
+          background: true
 
-
+      
       # - save_cache:
       #     key: v1-dependencies-{{ checksum "package.json" }}
       #     paths:
