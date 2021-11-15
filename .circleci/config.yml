@@ -50,11 +50,14 @@ jobs:
       - run:
           name: Start webserver
           command: |
-            chmod +x ./wait.sh
+            # chmod +x ./wait.sh
             ./startwebserver.sh
-            ./wait.sh
+            # ./wait.sh
           background: true
 
+      - run:
+          name: Sleep
+          command: sleep 20
       
       # - save_cache:
       #     key: v1-dependencies-{{ checksum "package.json" }}
