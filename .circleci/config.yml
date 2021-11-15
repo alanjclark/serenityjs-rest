@@ -25,6 +25,7 @@ jobs:
           command: |
             sh ./startwebserver.sh &&
             dockerize -wait http://127.0.0.1:8080 -timeout 20s
+          background: true
 
       # - restore_cache:
       #     keys:
