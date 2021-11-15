@@ -53,7 +53,9 @@ jobs:
 
       - run:
           name: Wait for webserver
-          command: ./wait.sh
+          command: |
+            chmod +x ./wait.sh
+            ./wait.sh
 
 
       # - save_cache:
