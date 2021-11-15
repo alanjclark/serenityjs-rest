@@ -17,7 +17,12 @@ jobs:
       - checkout    
       
       - run:  
-          command: ./startwebserver.sh
+          command: |
+            ./startwebserver.sh
+            until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:8080); do
+              printf '.'
+              sleep 1
+            done
           background: true
 
       # - run:
