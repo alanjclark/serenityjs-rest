@@ -1,0 +1,74 @@
+version: 2.1
+jobs:
+  integrationtest:
+    docker:
+    # CircleCI's next-gen convenience image for openJDK + Node installed
+      - image: cimg/openjdk:11.0-node
+    parameters:
+      env:
+        type: enum
+        enum: ['stage', 'preprod']
+        default: 'stage'
+    environment:
+      ENVIRONMENT: << parameters.env >>
+    working_directory: ~/repo
+    steps:
+      - build-tools/install-ci-tools
+      - checkout    
+      
+      - run:  
+          command: ./startwebserver.sh
+          background: true
+
+      - run:
+          name: Run server and confirm application is up
+          command: |
+            sh ./startwebserver.sh &
+            dockerize -wait http://127.0.0.1:8080 -timeout 20s
+
+      # - restore_cache:
+      #     keys:
+      #       - v1-dependencies-{{ checksum "package.json" }}
+      #       - v1-dependencies-
+      - run:
+          name: Install dependencies 
+          command: yarn
+      
+      # - save_cache:
+      #     key: v1-dependencies-{{ checksum "package.json" }}
+      #     paths:
+      #       - node_modules
+     
+      - run:
+          name: Run test 
+          command: yarn test:${ENVIRONMENT}
+     
+      - store_test_results:
+          path: target
+
+      # host latest report in AWS S3
+      - aws-s3/copy:
+          arguments: '--recursive --acl public-read-write'
+          from: target/site/serenity
+          to: 's3://serenitybdd'
+      - persist_to_workspace:
+          root: .
+          paths:
+            - package.json
+
+orbs:
+  aws-s3: circleci/aws-s3@3.0.0
+  build-tools: circleci/build-tools@3.0.0
+
+workflows:
+  version: 2
+  integrationtest:
+    jobs:
+      - integrationtest:
+            context:
+              - CIRCLE_CI_AWS_IAM
+            filters:
+              branches:
+                only:
+                  - master
+                  - /circleci-.*/
