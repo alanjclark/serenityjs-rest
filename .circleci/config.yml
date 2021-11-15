@@ -16,14 +16,14 @@ jobs:
       - build-tools/install-ci-tools
       - checkout    
       
-      - run:  
-          command: ./startwebserver.sh
-          background: true
+      # - run:  
+      #     command: ./startwebserver.sh
+      #     background: true
 
       - run:
           name: Run server and confirm application is up
           command: |
-            sh ./startwebserver.sh &
+            sh ./startwebserver.sh &&
             dockerize -wait http://127.0.0.1:8080 -timeout 20s
 
       # - restore_cache:
@@ -47,10 +47,10 @@ jobs:
           path: target
 
       # host latest report in AWS S3
-      - aws-s3/copy:
-          arguments: '--recursive --acl public-read-write'
-          from: target/site/serenity
-          to: 's3://serenitybdd'
+      # - aws-s3/copy:
+      #     arguments: '--recursive --acl public-read-write'
+      #     from: target/site/serenity
+      #     to: 's3://serenitybdd'
       - persist_to_workspace:
           root: .
           paths:
