@@ -17,7 +17,7 @@ jobs:
       - checkout    
       
       - run:  
-          command: ./startwebserver.sh
+          command: sudo ./startwebserver.sh
           background: true
 
       - run:
