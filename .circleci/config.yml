@@ -29,15 +29,15 @@ jobs:
       #         sleep 1
       #       done
 
-      - run:
-          name: Run server and confirm application is up
-          command: |
-            ./startwebserver.sh
-          background: true
+      # - run:
+      #     name: Run server and confirm application is up
+      #     command: |
+      #       ./startwebserver.sh
+      #     background: true
 
-      - run:
-          name: Wait for server
-          command: dockerize -wait http://127.0.0.1:8080 -timeout 20s
+      # - run:
+      #     name: Wait for server
+      #     command: dockerize -wait http://127.0.0.1:8080 -timeout 20s
 
       # - restore_cache:
       #     keys:
@@ -54,7 +54,10 @@ jobs:
      
       - run:
           name: Run test 
-          command: yarn test:${ENVIRONMENT}
+          command: |
+            ./startwebserver.sh
+            dockerize -wait http://127.0.0.1:8080 -timeout 20s
+            yarn test:${ENVIRONMENT}
      
       - store_test_results:
           path: target
