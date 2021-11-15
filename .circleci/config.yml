@@ -16,10 +16,10 @@ jobs:
       - build-tools/install-ci-tools
       - checkout    
       
-      - run:
-          name: Start webserver  
-          command: ./startwebserver.sh
-          background: true
+      # - run:
+      #     name: Start webserver  
+      #     command: ./startwebserver.sh
+      #     background: true
 
       # - run:
       #     name: Wait for webserver to start up
@@ -29,12 +29,12 @@ jobs:
       #         sleep 1
       #       done
 
-      # - run:
-      #     name: Run server and confirm application is up
-      #     command: |
-      #       sh ./startwebserver.sh &&
-      #       dockerize -wait http://127.0.0.1:8080 -timeout 20s
-      #     background: true
+      - run:
+          name: Run server and confirm application is up
+          command: |
+            sh ./startwebserver.sh &&
+            dockerize -wait http://127.0.0.1:8080 -timeout 20s
+          background: true
 
       # - restore_cache:
       #     keys:
