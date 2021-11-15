@@ -47,13 +47,12 @@ jobs:
           name: Install dependencies 
           command: yarn
 
-      # - run:
-      #     name: Start webserver
-      #     command: |
-      #       # chmod +x ./wait.sh
-      #       ./startwebserver.sh
-      #       # ./wait.sh
-      #     background: true
+      - run:
+          name: Start webserver
+          command: |
+            /etc/rc.d/init.d/tomcat start  
+            sleep 5   
+          background: true
 
       # - run:
       #     name: Sleep
@@ -67,8 +66,6 @@ jobs:
       - run:
           name: Run test 
           command: |
-            ./startwebserver.sh
-            sleep 20
             yarn test:${ENVIRONMENT}
      
       - store_test_results:
