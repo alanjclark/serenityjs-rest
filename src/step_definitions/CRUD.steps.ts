@@ -11,7 +11,7 @@ const uuid = require("uuid")
 
 Given('{actor} is at the base url', (actor: Actor) =>
 actor.attemptsTo(
-   ChangeApiConfig.setUrlTo('http://127.0.0.1:8000/webapp')
+   ChangeApiConfig.setUrlTo('http://127.0.0.1:8080/webapp')
 ))
 
 When('{pronoun} wants to create a new message with author {string} and message {string}', (actor: Actor, author: string, message: string) =>
