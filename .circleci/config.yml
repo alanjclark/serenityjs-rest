@@ -48,7 +48,7 @@ jobs:
           command: yarn
 
       - run:
-          name: Start webserver
+          name: Start Tomcat
           command: ./startwebserver.sh
           background: true
 
