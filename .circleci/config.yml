@@ -47,9 +47,19 @@ jobs:
           name: Install dependencies 
           command: yarn
 
-      - run:
-          name: Start Tomcat
+      - run:  
           command: ./startwebserver.sh
+          background: true
+
+      - run:
+          name: Run server and confirm application is up
+          command: |
+            sh ./startwebserver.sh &
+            dockerize -wait http://127.0.0.1:8080 -timeout 20s
+
+      - run:
+          name: Check if the server is up
+          command: journalctl -u tomcat9.service
           background: true
 
       # - run:
