@@ -16,43 +16,13 @@ jobs:
       - build-tools/install-ci-tools
       - checkout    
       
-      # - run:
-      #     name: Start webserver  
-      #     command: ./startwebserver.sh
-      #     background: true
-
-      # - run:
-      #     name: Wait for webserver to start up
-      #     command: |
-      #       until $(curl --output /dev/null --silent --head --fail http://127.0.0.1:8000); do
-      #         printf '.'
-      #         sleep 1
-      #       done
-
-      # - run:
-      #     name: Run server and confirm application is up
-      #     command: |
-      #       ./startwebserver.sh
-      #     background: true
-
-      # - run:
-      #     name: Wait for server
-      #     command: dockerize -wait http://localhost:8000 -timeout 20s
-
-      # - restore_cache:
-      #     keys:
-      #       - v1-dependencies-{{ checksum "package.json" }}
-      #       - v1-dependencies-
-      # - run:
-      #     name: Install dependencies 
-      #     command: yarn
 
       - run:  
           command: ./startwebserver.sh
           background: true
 
       - run:
-          name: Run server and confirm application is up
+          name: Check service is running
           command: dockerize -wait http://127.0.0.1:8080 -timeout 20s
 
       - run:
@@ -60,15 +30,6 @@ jobs:
           command: journalctl -u tomcat9.service
           background: true
 
-      # - run:
-      #     name: Sleep
-      #     command: sleep 20
-      
-      # - save_cache:
-      #     key: v1-dependencies-{{ checksum "package.json" }}
-      #     paths:
-      #       - node_modules
-     
       - run:
           name: Run test 
           command: |
